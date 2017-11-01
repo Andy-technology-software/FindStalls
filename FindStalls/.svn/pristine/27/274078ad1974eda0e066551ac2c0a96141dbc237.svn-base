@@ -1,0 +1,151 @@
+//
+//  MemberIndex0TableViewCell.m
+//  FindStalls
+//
+//  Created by lingnet on 2017/10/17.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#import "MemberIndex0TableViewCell.h"
+
+#import "MemberIndex0Model.h"
+@interface MemberIndex0TableViewCell()<UITextFieldDelegate>
+@property (nonatomic, strong) UIImageView* _bgImageview;
+
+@property (nonatomic, strong) UIImageView* _levelImageview;
+@property (nonatomic, strong) UIImageView* _vipImageview;
+@property (nonatomic, strong) UILabel* _nameLable;
+
+@property (nonatomic, strong) UIImageView* _headImageview;
+@property (nonatomic, strong) UIButton* _headImageBtn;
+
+@property (nonatomic, strong) UIButton* _seetingBtn;
+@property (nonatomic, strong) UIButton* _memberBtn;
+@end
+
+@implementation MemberIndex0TableViewCell
+
+- (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style
+                      reuseIdentifier:(nullable NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self makeUI];
+    }
+    
+    return self;
+}
+- (void)makeUI{
+    self._bgImageview = [MyController createImageViewWithFrame:self.contentView.frame ImageName:@""];
+    self._bgImageview.backgroundColor = [UIColor redColor];
+    [self.contentView addSubview:self._bgImageview];
+    
+    [self._bgImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+    }];
+    
+    
+    self._memberBtn = [MyController createButtonWithFrame:self.contentView.frame ImageName:@"" Target:self Action:@selector(memberBtnClick) Title:nil];
+    self._memberBtn.backgroundColor = [UIColor blackColor];
+    [self.contentView addSubview:self._memberBtn];
+    
+    [self._memberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-15);
+        make.top.mas_equalTo(30);
+        make.width.mas_offset(20);
+        make.height.mas_offset(20);
+    }];
+    
+    
+    self._seetingBtn = [MyController createButtonWithFrame:self.contentView.frame ImageName:@"" Target:self Action:@selector(seetingBtnClick) Title:nil];
+    self._seetingBtn.backgroundColor = [UIColor blackColor];
+    [self.contentView addSubview:self._seetingBtn];
+    
+    [self._seetingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self._memberBtn.mas_left).mas_offset(-10);
+        make.top.mas_equalTo(self._memberBtn);
+        make.width.mas_equalTo(self._memberBtn);
+        make.height.mas_equalTo(self._memberBtn);
+    }];
+    
+    
+    self._headImageview = [MyController createImageViewWithFrame:self.contentView.frame ImageName:nil];
+    self._headImageview.backgroundColor = [UIColor blackColor];
+    //将图层的边框设置为圆脚
+    self._headImageview.layer.cornerRadius = 60;
+    self._headImageview.layer.masksToBounds = YES;
+    [self._headImageview setContentMode:UIViewContentModeScaleAspectFill];
+    self._headImageview.clipsToBounds = YES;
+    [self.contentView addSubview:self._headImageview];
+    
+    [self._headImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(23);
+        make.top.mas_equalTo(70);
+        make.width.mas_offset(120);
+        make.height.mas_offset(120);
+    }];
+    
+    
+    self._headImageBtn = [MyController createButtonWithFrame:self.contentView.frame ImageName:nil Target:self Action:@selector(headImageBtnClick) Title:nil];
+    //将图层的边框设置为圆脚
+    self._headImageBtn.layer.cornerRadius = 60;
+    self._headImageBtn.layer.masksToBounds = YES;
+    [self._headImageBtn setContentMode:UIViewContentModeScaleAspectFill];
+    self._headImageBtn.clipsToBounds = YES;
+    [self.contentView addSubview:self._headImageBtn];
+    
+    [self._headImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(23);
+        make.top.mas_equalTo(70);
+        make.width.mas_offset(120);
+        make.height.mas_offset(120);
+    }];
+    
+    self._nameLable = [MyController createLabelWithFrame:self.contentView.frame Font:16 Text:nil];
+    self._nameLable.textColor = [UIColor whiteColor];
+    self._nameLable.numberOfLines = 1;
+    self._nameLable.lineBreakMode = NSLineBreakByTruncatingTail;
+    [self.contentView addSubview:self._nameLable];
+    
+    [self._nameLable mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self._headImageBtn.mas_right).mas_offset(12);
+        make.top.mas_equalTo(173/2);
+        make.right.mas_lessThanOrEqualTo(-30);
+    }];
+    
+    self._vipImageview = [MyController createImageViewWithFrame:self.contentView.frame ImageName:@""];
+    self._vipImageview.backgroundColor = [UIColor blackColor];
+    [self.contentView addSubview:self._vipImageview];
+    
+    [self._vipImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self._nameLable.mas_right).mas_offset(4);
+        make.centerY.mas_equalTo(self._nameLable.mas_centerY);
+        make.width.mas_offset(20);
+        make.height.mas_offset(20);
+    }];
+    
+    
+    self._levelImageview = [MyController createImageViewWithFrame:self.contentView.frame ImageName:@""];
+    self._levelImageview.backgroundColor = [UIColor blackColor];
+    [self.contentView addSubview:self._levelImageview];
+    
+    [self._levelImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self._headImageBtn.mas_right).mas_offset(7);
+        make.top.mas_equalTo(self._nameLable.mas_bottom).mas_offset(7);
+        make.width.mas_offset(135);
+    }];
+    
+    
+    self.hyb_lastViewInCell = self._bgImageview;
+    self.hyb_bottomOffsetToCell = 20;
+    
+}
+
+- (void)configCellWithModel:(MemberIndex0Model *)model {
+    [self._headImageview sd_setImageWithURL:[NSURL URLWithString:model._headImage] placeholderImage:[UIImage imageNamed:@""]];
+    
+    
+}
+
+@end

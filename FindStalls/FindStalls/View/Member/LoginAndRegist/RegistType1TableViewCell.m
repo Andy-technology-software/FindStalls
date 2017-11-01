@@ -1,0 +1,48 @@
+//
+//  RegistType1TableViewCell.m
+//  FindStalls
+//
+//  Created by lingnet on 2017/10/19.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#import "RegistType1TableViewCell.h"
+@interface RegistType1TableViewCell()
+
+@property (nonatomic, strong) UIButton* registBtn;
+@end
+@implementation RegistType1TableViewCell
+
+- (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style
+                      reuseIdentifier:(nullable NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self makeUI];
+    }
+    
+    return self;
+}
+- (void)makeUI{
+    self.registBtn = [MyController createButtonWithFrame:self.contentView.frame ImageName:@"提交" Target:self Action:@selector(registBtnClick) Title:nil];
+    [self.registBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.contentView addSubview:self.registBtn];
+    
+    [self.registBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(10);
+        make.right.mas_equalTo(-10);
+        make.top.mas_equalTo(15);
+        make.height.mas_offset(([MyController getScreenWidth] - 20) * 135 / 631);
+    }];
+    
+    self.hyb_lastViewInCell = self.registBtn;
+    self.hyb_bottomOffsetToCell = 20;
+}
+
+- (void)configCellWithModel {
+    
+}
+
+- (void)registBtnClick {
+    [self.RegistType1TableViewCellDelegate sendBackRegist];
+}
+
+@end

@@ -1,0 +1,253 @@
+//
+//  RegistTableViewCell.m
+//  FindStalls
+//
+//  Created by lingnet on 2017/10/19.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#import "RegistTableViewCell.h"
+
+#import "RegistModel.h"
+@interface RegistTableViewCell()<UITextFieldDelegate>
+@property (nonatomic, strong) UIView* nameBgView;
+@property (nonatomic, strong) UIImageView* nameBgImageview;
+@property (nonatomic, strong) UIImageView* nameLeftImageview;
+@property (nonatomic, strong) UITextField* nameTF;
+
+@property (nonatomic, strong) UIView* codeBgView;
+@property (nonatomic, strong) UIImageView* codeBgImageview;
+@property (nonatomic, strong) UIImageView* codeLeftImageview;
+@property (nonatomic, strong) UITextField* codeTF;
+@property (nonatomic, strong) UIButton* codeBtn;
+@property (nonatomic, strong) UIView* codeLine;
+
+@property (nonatomic, strong) UIView* pwdBgView;
+@property (nonatomic, strong) UIImageView* pwdBgImageview;
+@property (nonatomic, strong) UIImageView* pwdLeftImageview;
+@property (nonatomic, strong) UITextField* pwdTF;
+
+@property (nonatomic, strong) UIButton* registBtn;
+@end
+@implementation RegistTableViewCell
+
+- (nonnull instancetype)initWithStyle:(UITableViewCellStyle)style
+                      reuseIdentifier:(nullable NSString *)reuseIdentifier {
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        [self makeUI];
+    }
+    
+    return self;
+}
+- (void)makeUI{
+    self.nameBgView = [MyController viewWithFrame:self.contentView.frame];
+    self.nameBgView.backgroundColor = [UIColor redColor];
+    [self.contentView addSubview:self.nameBgView];
+    
+    [self.nameBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.right.mas_equalTo(-12);
+        make.top.mas_equalTo(44);
+        make.height.mas_offset(51);
+    }];
+    
+    
+    self.nameBgImageview = [MyController createImageViewWithFrame:self.nameBgView.frame ImageName:@""];
+    [self.nameBgView addSubview:self.nameBgImageview];
+    
+    [self.nameBgImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.height.mas_equalTo(self.nameBgView);
+    }];
+    
+    self.nameLeftImageview = [MyController createImageViewWithFrame:self.nameBgView.frame ImageName:@"手机号"];
+    self.nameLeftImageview.backgroundColor = [UIColor redColor];
+    [self.nameBgView addSubview:self.nameLeftImageview];
+    
+    [self.nameLeftImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.centerY.mas_equalTo(self.nameBgView.mas_centerY);
+        make.width.mas_offset(22);
+        make.height.mas_offset(22);
+    }];
+    
+    self.nameTF = [MyController createTextFieldWithFrame:self.nameBgView.frame placeholder:@"请输入账号" passWord:NO leftImageView:nil rightImageView:nil Font:14];
+    self.nameTF.delegate = self;
+    self.nameTF.tag = 100;
+    [self.nameBgView addSubview:self.nameTF];
+    
+    [self.nameTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.nameLeftImageview.mas_right).mas_offset(23);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(-25);
+    }];
+    
+    
+    //验证码
+    self.codeBgView = [MyController viewWithFrame:self.contentView.frame];
+    self.codeBgView.backgroundColor = [UIColor redColor];
+    [self.contentView addSubview:self.codeBgView];
+    
+    [self.codeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.right.mas_equalTo(-12);
+        make.top.mas_equalTo(self.nameBgView.mas_bottom).mas_offset(20);
+        make.height.mas_equalTo(self.nameBgView);
+    }];
+    
+    
+    self.codeBgImageview = [MyController createImageViewWithFrame:self.nameBgView.frame ImageName:@""];
+    [self.codeBgView addSubview:self.codeBgImageview];
+    
+    [self.codeBgImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.height.mas_equalTo(self.codeBgView);
+    }];
+    
+    self.codeLeftImageview = [MyController createImageViewWithFrame:self.codeBgView.frame ImageName:@"验证码"];
+    self.codeLeftImageview.backgroundColor = [UIColor redColor];
+    [self.codeBgView addSubview:self.codeLeftImageview];
+    
+    [self.codeLeftImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.centerY.mas_equalTo(self.codeBgView.mas_centerY);
+        make.width.mas_offset(22);
+        make.height.mas_offset(22);
+    }];
+    
+    self.codeBtn = [MyController createButtonWithFrame:self.codeBgView.frame ImageName:nil Target:self Action:@selector(codeBtnClick) Title:@"获取验证码"];
+    self.codeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self.codeBtn setTitleColor:[MyController colorWithHexString:NAVTITCOLOR] forState:UIControlStateNormal];
+    [self.codeBgView addSubview:self.codeBtn];
+    
+    [self.codeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(-10);
+        make.width.mas_offset(90);
+    }];
+    
+    self.codeLine = [MyController viewWithFrame:self.codeBgView.frame];
+    self.codeLine.backgroundColor = [MyController colorWithHexString:@"c3c3c3"];
+    [self.codeBgView addSubview:self.codeLine];
+    
+    [self.codeLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.codeBtn.mas_left);
+        make.top.mas_equalTo(10);
+        make.bottom.mas_equalTo(-10);
+        make.width.mas_offset(0.5);
+    }];
+    
+    
+    self.codeTF = [MyController createTextFieldWithFrame:self.nameBgView.frame placeholder:@"请输入密码" passWord:NO leftImageView:nil rightImageView:nil Font:14];
+    self.codeTF.delegate = self;
+    self.codeTF.tag = 200;
+    [self.codeBgView addSubview:self.codeTF];
+    
+    [self.codeTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.codeLeftImageview.mas_right).mas_offset(23);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(self.codeLine.mas_left).mas_offset(-3);
+    }];
+    
+    
+    
+    
+    self.pwdBgView = [MyController viewWithFrame:self.contentView.frame];
+    self.pwdBgView.backgroundColor = [UIColor redColor];
+    [self.contentView addSubview:self.pwdBgView];
+    
+    [self.pwdBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.right.mas_equalTo(-12);
+        make.top.mas_equalTo(self.codeBgView.mas_bottom).mas_offset(20);
+        make.height.mas_equalTo(self.nameBgView);
+    }];
+    
+    
+    self.pwdBgImageview = [MyController createImageViewWithFrame:self.nameBgView.frame ImageName:@""];
+    [self.pwdBgView addSubview:self.pwdBgImageview];
+    
+    [self.pwdBgImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.height.mas_equalTo(self.pwdBgView);
+    }];
+    
+    self.pwdLeftImageview = [MyController createImageViewWithFrame:self.pwdBgView.frame ImageName:@"密码"];
+    self.pwdLeftImageview.backgroundColor = [UIColor redColor];
+    [self.pwdBgView addSubview:self.pwdLeftImageview];
+    
+    [self.pwdLeftImageview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.centerY.mas_equalTo(self.pwdBgView.mas_centerY);
+        make.width.mas_offset(22);
+        make.height.mas_offset(22);
+    }];
+    
+    self.pwdTF = [MyController createTextFieldWithFrame:self.nameBgView.frame placeholder:@"请输入密码" passWord:NO leftImageView:nil rightImageView:nil Font:14];
+    self.pwdTF.delegate = self;
+    self.pwdTF.tag = 300;
+    [self.pwdBgView addSubview:self.pwdTF];
+    
+    [self.pwdTF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.pwdLeftImageview.mas_right).mas_offset(23);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(-25);
+    }];
+    
+    self.registBtn = [MyController createButtonWithFrame:self.contentView.frame ImageName:@"注册" Target:self Action:@selector(loginBtnClick) Title:nil];
+    [self.registBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.contentView addSubview:self.registBtn];
+    
+    [self.registBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.pwdBgView);
+        make.right.mas_equalTo(self.pwdBgView);
+        make.top.mas_equalTo(self.pwdBgView.mas_bottom).mas_offset(33);
+        make.height.mas_offset(51);
+    }];
+    
+    self.hyb_lastViewInCell = self.registBtn;
+    self.hyb_bottomOffsetToCell = 20;
+}
+
+- (void)configCellWithModel:(RegistModel *)model{
+    self.nameTF.text = model._tel;
+    
+    self.pwdTF.text = model._pwd;
+    
+    self.codeTF.text = model._code;
+}
+
+- (void)loginBtnClick{
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder)
+                                               to:nil
+                                             from:nil
+                                         forEvent:nil];
+    
+    [self.RegistTableViewCellDelegate sendBackRegist];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (100 == textField.tag) {
+        [self.RegistTableViewCellDelegate sendBackTel:textField.text];
+    }else if (200 == textField.tag) {
+        [self.RegistTableViewCellDelegate sendBackCode:textField.text];
+    }else {
+        [self.RegistTableViewCellDelegate sendBackPwd:textField.text];
+    }
+}
+
+- (void)codeBtnClick {
+    
+}
+
+@end

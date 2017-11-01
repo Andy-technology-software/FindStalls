@@ -1,0 +1,56 @@
+//
+//  MemberIndexPageViewController.m
+//  FindStalls
+//
+//  Created by lingnet on 2017/10/16.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#import "MemberIndexPageViewController.h"
+
+#import "LoginViewController.h"
+@interface MemberIndexPageViewController ()
+
+@end
+
+@implementation MemberIndexPageViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    UIButton* loginB = [MyController createButtonWithFrame:CGRectMake(100, 100, 66, 66) ImageName:nil Target:self Action:@selector(loginBClick) Title:@"登录"];
+    [loginB setBackgroundColor:[UIColor redColor]];
+    [loginB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view addSubview:loginB];
+}
+
+- (void)loginBClick{
+    LoginViewController* vc = [[LoginViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

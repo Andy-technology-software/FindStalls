@@ -1,0 +1,32 @@
+//
+//  GemHeader.h
+//  FindStalls
+//
+//  Created by Gem on 2017/10/17.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#ifndef GemHeader_h
+#define GemHeader_h
+//获取屏幕 宽度、高度
+#define IS_iPhoneX ([UIScreen mainScreen].bounds.size.width == 375 && [UIScreen mainScreen].bounds.size.height == 812)
+#define  NavigationBarHeight  (IS_iPhoneX ? 88.f : 64.f)
+#define Screen_Width ([UIScreen mainScreen].bounds.size.width)
+#define SCreen_Height ([UIScreen mainScreen].bounds.size.height - NavigationBarHeight)
+#define  BottomHeight  (IS_iPhoneX ? 70.f : 40.f)
+#define  TabBarHeight  (IS_iPhoneX ? 83.f : 49.f)
+#define  SPACE  13.f
+#define TextColor @"a8a8a8"
+#define OrangeColor @"ff6c34"
+#define BlackColor @"2a2a2a"
+
+#define ViewBorderRadius(View, Radius, Width, Color)\
+\
+[View.layer setCornerRadius:(Radius)];\
+[View.layer setMasksToBounds:YES];\
+[View.layer setBorderWidth:(Width)];\
+[View.layer setBorderColor:[Color CGColor]]
+
+#import "UIView+SDAutoLayout.h"
+#import "UITableView+SDAutoTableViewCellHeight.h"
+#endif /* GemHeader_h */

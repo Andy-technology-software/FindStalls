@@ -1,0 +1,20 @@
+//
+//  MemberIndex0TableViewCell.h
+//  FindStalls
+//
+//  Created by lingnet on 2017/10/17.
+//  Copyright © 2017年 徐仁强. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class MemberIndex0Model;
+@protocol MemberIndex0TableViewCellDelegate <NSObject>
+- (void)sendBackChangeHeadimage;
+- (void)sendBackSeeting;
+- (void)sendBackMember;
+@end
+@interface MemberIndex0TableViewCell : UITableViewCell
+- (void)configCellWithModel:(MemberIndex0Model *)model;
+@property(nonatomic,weak)id<MemberIndex0TableViewCellDelegate>MemberIndex0TableViewCellDelegate;
+
+@end
